@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -24,10 +25,10 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CompanyRequest $request
      * @return CompanyResource
      */
-    public function store(Request $request): CompanyResource
+    public function store(CompanyRequest $request): CompanyResource
     {
         $company = Company::create($request->all());
         return new CompanyResource($company);
