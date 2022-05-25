@@ -72,7 +72,7 @@ export default {
         * Next, the saveCompany() method will be a local component method, which, in turn, calls the Composable
         * method of createCompany().*/
         const saveCompany = async () => {
-            await storeCompany({ ...form })
+            await storeCompany({ form })
         }
 
         return {
