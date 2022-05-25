@@ -45,17 +45,23 @@
 </template>
 
 <script>
+// Here we're using a Composable file here, its code is above
 import useCompanies from '../../composables/companies'
+
+// onMounted will define what method to "fire" automatically
 import { onMounted } from 'vue';
 
 export default {
+    // This is a Vue 3 syntax to define the component setup()
     setup() {
+        // We need only two things from the useCompanies() composable
         const { companies, getCompanies } = useCompanies()
 
+        // We get the companies immediately
         onMounted(getCompanies)
 
         return {
-            companies,
+            companies, // and return them to use in <template>
         }
     }
 }
