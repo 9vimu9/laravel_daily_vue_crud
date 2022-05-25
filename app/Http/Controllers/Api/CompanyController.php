@@ -48,11 +48,11 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CompanyRequest $request
      * @param Company $company
      * @return CompanyResource
      */
-    public function update(Request $request, Company $company): CompanyResource
+    public function update(CompanyRequest $request, Company $company): CompanyResource
     {
         $company->update($request->all());
         return new CompanyResource($company);
