@@ -1,0 +1,66 @@
+version: '3.7'
+services:
+
+    #PHP Service
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: digitalocean.com/php
+        container_name: vue_crud_app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: vue_crud_app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - vue_crud_app_network
+
+    #Nginx Service
+    webserver:
+        image: nginx:alpine
+        container_name: vue_crud_app_webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8081:80"
+            - "446:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - vue_crud_app_network
+
+    #MySQL Service
+    db:
+        image: mysql:5.7.22
+        container_name: vue_crud_app_SQL_server
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3336:3306"
+        environment:
+            MYSQL_DATABASE: vue_crud_db
+            MYSQL_ROOT_PASSWORD: pass
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - vue_crud_app_network
+
+#Docker Networks
+networks:
+    vue_crud_app_network:
+        driver: bridge
+#Volumes
+volumes:
+    dbdata:
+        driver: local
